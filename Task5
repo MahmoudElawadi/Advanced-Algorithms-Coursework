@@ -1,0 +1,65 @@
+import java.util.Stack;
+
+// Define a Node class to represent a node in the binary expression tree
+class Node {
+    char value;
+    Node left, right;
+
+    public Node(char value) {
+        this.value = value;
+        left = right = null;
+    }
+}
+
+public class Task5 {
+
+    // Determine whether a character is an operator
+    public static boolean IsOperator(char op) {
+        if (op == '+' || op == '-' || op == '*' || op == '/' || op == '^') {
+            return true;
+        }
+        return false;
+    }
+
+    // Construct a binary expression tree from a postfix expression
+    public static Node ConstructTree(String postfix) {
+        Stack<Node> st = new Stack<>();
+        System.out.println("Postfix Expression is :  " + postfix);
+        for (char c : postfix.toCharArray()) {
+            Node t = new Node(c);
+            if (IsOperator(c)) {
+                Node t1 = st.pop();
+                Node t2 = st.pop();
+                t.right = t1;
+                t.left = t2;
+            }
+            st.push(t);
+        }
+        Node t = st.pop();
+        return t;
+    }
+
+    // Print the infix expression by performing an inorder traversal of the binary expression tree
+    public static void inorder(Node root) {
+        if (root != null) {
+            if (IsOperator(root.value)) {
+                System.out.print("(");
+            }
+            inorder(root.left);
+            System.out.print(root.value);
+            inorder(root.right);
+            if (IsOperator(root.value)) {
+                System.out.print(")");
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        Task5 bt = new Task5();
+        String postfix = "ab+ef*g*-";
+        Node root = bt.ConstructTree(postfix);
+        System.out.print("Infix Expression is : ");
+        bt.inorder(root);
+        System.out.println();
+    }
+}
