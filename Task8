@@ -1,0 +1,96 @@
+import java.util.Stack;
+
+public class Task8 {
+    static final int TOTAL_VERTICES = 4; // Total number of vertices in the graph
+
+    // Helper method to find the vertex with the minimum distance value, from the set of vertices not yet included in the shortest path tree
+    int FindMinimumDistanceVertex(int[] distances, boolean[] ShortestPathTree, int[] parents) {
+        int MinDistance = Integer.MAX_VALUE;
+        int MinVertexIndex = -1;
+
+        // Iterate through all vertices
+        for (int vertexIndex = 0; vertexIndex < TOTAL_VERTICES; vertexIndex++) {
+            // If the vertex is not already in the shortest path tree and its distance is less than the current minimum distance
+            if (!ShortestPathTree[vertexIndex] && distances[vertexIndex] < MinDistance) {
+                MinDistance = distances[vertexIndex];
+                MinVertexIndex = vertexIndex;
+            }
+        }
+
+        return MinVertexIndex;
+    }
+
+    // Helper method to print the shortest distance and path from the source vertex to all other vertices
+    void PrintSolution(int[] distance, int[] parent, int SourceVertex) {
+        System.out.println("The shortest path from source vertex " + SourceVertex + " to all other vertices are: ");
+        char[] vertexLabels = {'A', 'B', 'C', 'D'}; // Labels for the vertices
+
+        for (char label : vertexLabels) {
+            int vertexIndex = label - 'A'; // Convert the character label to vertex index
+            System.out.print("To " + label + ": shortest distance = " + distance[vertexIndex] + ", path = ");
+            Stack<Integer> path = new Stack<>();
+            int CurrentVertexIndex = vertexIndex;
+            path.push(CurrentVertexIndex);
+
+            // Build the path stack by tracing the parent array backwards from the current vertex
+            while (parent[CurrentVertexIndex] != -1) {
+                path.push(parent[CurrentVertexIndex]);
+                CurrentVertexIndex = parent[CurrentVertexIndex];
+            }
+
+            // Print the path by popping elements off the stack
+            while (!path.empty()) {
+                System.out.print(vertexLabels[path.pop()] + " "); // Convert the vertex index to character label
+            }
+            System.out.println();
+        }
+    }
+
+    // Dijkstra's algorithm implementation
+    void Dijkstra(int[][] graph, int SourceVertex) {
+        int[] distance = new int[TOTAL_VERTICES]; // Array to store the shortest distance from the source vertex to each vertex
+        int[] parent = new int[TOTAL_VERTICES]; // Array to store the parent of each vertex in the shortest path tree
+        boolean[] ShortestPathTreeSet = new boolean[TOTAL_VERTICES]; // Array to mark vertices included in the shortest path tree
+
+        // Initialize all distances to infinity, all parents to -1, and all vertices to not be included in the shortest path tree
+        for (int vertex = 0; vertex < TOTAL_VERTICES; vertex++) {
+            distance[vertex] = Integer.MAX_VALUE;
+            ShortestPathTreeSet[vertex] = false;
+            parent[vertex] = -1;
+        }
+
+        distance[SourceVertex] = 0; // Distance of the source vertex from itself is always 0
+
+        // Find shortest path for all vertices
+        for (int i = 0; i < TOTAL_VERTICES - 1; i++) {
+            int CurrentVertexIndex = FindMinimumDistanceVertex(distance, ShortestPathTreeSet, parent); // Find the vertex with the minimum distance value
+            ShortestPathTreeSet[CurrentVertexIndex] = true; // Mark the current vertex as included in the shortest path tree
+
+            // Update the distances of adjacent vertices that are not yet included in the shortest path tree
+            for (int AdjacentVertexIndex = 0; AdjacentVertexIndex < TOTAL_VERTICES; AdjacentVertexIndex++) {
+                if (!ShortestPathTreeSet[AdjacentVertexIndex] && graph[CurrentVertexIndex][AdjacentVertexIndex] != -1 &&
+                        distance[CurrentVertexIndex] != Integer.MAX_VALUE &&
+                        distance[CurrentVertexIndex] + graph[CurrentVertexIndex][AdjacentVertexIndex] < distance[AdjacentVertexIndex]) {
+                    distance[AdjacentVertexIndex] = distance[CurrentVertexIndex] + graph[CurrentVertexIndex][AdjacentVertexIndex];
+                    parent[AdjacentVertexIndex] = CurrentVertexIndex;
+                }
+            }
+        }
+
+        PrintSolution(distance, parent, SourceVertex);
+    }
+
+    // Main method
+    public static void main(String[] args) {
+        // Create a 4x4 adjacency matrix for the graph
+        int[][] graph = new int[][] {
+                {-1, 1, -1, 1},
+                {-1, -1, 1, -1},
+                {-1, -1, -1, 1},
+                {-1, -1, -1, -1}
+        };
+
+        Task8 task = new Task8(); // Create a new instance of the Task8 class
+        task.Dijkstra(graph, 0); // Find the shortest path from vertex 0 to all other vertices
+    }
+}
