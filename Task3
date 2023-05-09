@@ -1,0 +1,107 @@
+public class Task3 {
+
+    private
+    int[] arr; // an array to store the elements of the two stacks
+    int size; // the size of the array
+    int TopRed; // the index of the top element of the red stack
+    int TopBlue; // the index of the top element of the blue stack
+
+    public Task3(int size) {
+        arr = new int[size]; // initialize the array with the given size
+        TopRed = -1; // set the top of the red stack to -1 (empty)
+        TopBlue = size; // set the top of the blue stack to size (empty)
+    }
+
+    public void PushRed(int element) {
+        if (TopRed + 1 == TopBlue) // check if there is space to push an element to the red stack
+            System.out.println("Stack overflow by element " + element); // print an error message if not
+        else
+            arr[++TopRed] = element; // increment the top of the red stack and store the element in the array
+    }
+
+    public void PushBlue(int element) {
+        if (TopRed + 1 == TopBlue) // check if there is space to push an element to the blue stack
+            System.out.println("Stack overflow by element " + element); // print an error message if not
+        else
+            arr[--TopBlue] = element; // decrement the top of the blue stack and store the element in the array
+    }
+
+    public int PopRed() {
+        if (TopRed == -1) // check if the red stack is empty
+            System.out.println("Stack in empty"); // print an error message if yes
+        return arr[TopRed--]; // return the top element of the red stack and decrement the top index
+    }
+
+    public int PopBlue() {
+        if (TopBlue == arr.length) // check if the blue stack is empty
+            System.out.println("Stack in empty"); // print an error message if yes
+        return arr[TopBlue++]; // return the top element of the blue stack and increment the top index
+    }
+
+    public int TopRed() {
+
+        if (TopRed == -1) // check if the red stack is empty
+            System.out.println("Stack in empty"); // print an error message if yes
+        return arr[TopRed]; // return the top element of the red stack without changing the top index
+    }
+
+    public int TopBlue() {
+        if (TopBlue == arr.length) // check if the blue stack is empty
+            System.out.println("Stack in empty"); // print an error message if yes
+        return arr[TopBlue]; // return the top element of the blue stack without changing the top index
+    }
+
+    public void IsEmptyRed() {
+        if (TopRed == -1) // check if the red stack is empty
+            System.out.println("The red stack is empty"); // print a message if yes
+        else
+            System.out.println("The red stack is not empty"); // print a message if no
+    }
+    public void IsEmptyBlue() {
+        if (TopBlue == arr.length) // check if the blue stack is empty
+            System.out.println("The blue stack is empty"); // print a message if yes
+        else
+            System.out.println("The blue stack is not empty"); // print a message if no
+    }
+
+    public void PrintRedStack () {
+        System.out.println("The elements in the red stack are: ");
+        for (int i = 0; i <= TopRed; i++) { // loop through the array from index 0 to TopRed
+            System.out.println (arr [i]) ; // print each element in the red stack
+        }
+    }
+
+    public void PrintBlueStack () {
+        System.out.println("The elements in the blue stack are: ");
+
+        for (int i = TopBlue; i < arr.length; i++) { // loop through the array from index TopBlue to size-1
+            System.out.println (arr [i]); // print each element in the blue stack
+
+        }
+    }
+
+
+
+
+    public static void main(String [] args) {
+
+        Task3 task3 = new Task3(5);
+        task3.PushRed(1);
+        task3.PushBlue(2);
+        task3.PushRed(3);
+        task3.PushBlue(4);
+        task3.PushRed(5);
+        task3.PopRed();
+        task3.PopBlue();
+        task3.PrintRedStack();
+        task3.PrintBlueStack();
+        System.out.println("Red stack top: " + task3.TopRed());
+        System.out.println("Blue stack top: " + task3.TopBlue());
+
+    }
+
+
+}
+
+
+
