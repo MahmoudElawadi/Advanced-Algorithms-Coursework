@@ -3,18 +3,25 @@ import java.util.HashSet;
 
 public class Task1 {
 
-    public static void RemoveDuplicates(Set <Character> st, char arr[]){
+    // This method takes a set and an array of characters, adds each
+    // character to the set, removing duplicates, and then prints the
+    // set of unique elements
+    public static void RemoveDuplicates(Set<Character> st, char arr[]) {
         for(int i = 0 ; i<arr.length ; ++i)
             st.add(arr[i]);
 
-       System.out.println("The unique elements are " + st);
+        System.out.println("The unique elements are " + st);
     }
 
     public static void main(String [] args) {
 
+        // Create a new HashSet to hold the unique elements
         Set<Character> st = new HashSet<Character> ();
-       char [] arr = {'a','X','c','d','D','a','X'};
-       RemoveDuplicates(st,arr);
 
+        // Create an array of characters with some duplicates
+        char [] arr = {'a','b','c','d','b','a'};
+
+        // Call the RemoveDuplicates method with the set and the array
+        RemoveDuplicates(st,arr);
     }
 }
