@@ -1,0 +1,72 @@
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
+public class Task6 {
+    private Set<String> words; // Set of valid list of words
+
+    // Constructor to initialize the words
+    public Task6(Set<String> words) {
+        this.words = words;
+    }
+
+    // Method to find closest matches for a given string
+    public Set<String> GetClosestMatches(String s) {
+        Set<String> closestMatches = new HashSet<>(); // Set to store closest matches
+        if (words.contains(s)) { // If the given string is already a valid word
+            closestMatches.add(s); // Add it to the set of closest matches
+            return closestMatches; // Return the set of closest matches
+        }
+
+        // If the given string is not a valid  word, try different modifications to find closest matches
+        for (int i = 0; i < s.length(); i++) {
+            //deleting one character
+            String deleted = s.substring(0, i) + s.substring(i + 1);
+            if (words.contains(deleted)) {
+                closestMatches.add(deleted);
+            }
+            //swapping adjacent characters
+            if (i < s.length() - 1) {
+                String swapped = s.substring(0, i) + s.charAt(i + 1) + s.charAt(i) + s.substring(i + 2);
+                if (words.contains(swapped)) {
+                    closestMatches.add(swapped);
+                }
+            }
+            //replacing one character
+            for (char c = 'a'; c <= 'z'; c++) {
+                String replaced = s.substring(0, i) + c + s.substring(i + 1);
+                if (words.contains(replaced)) {
+                    closestMatches.add(replaced);
+                }
+            }
+            //inserting one character
+            for (char c = 'a'; c <= 'z'; c++) {
+                String inserted = s.substring(0, i) + c + s.substring(i);
+                if (words.contains(inserted)) {
+                    closestMatches.add(inserted);
+                }
+            }
+        }
+        return closestMatches; // Return the set of closest matches
+    }
+
+    public static void main(String[] args) {
+        Set<String> words = new HashSet<>(); // Set of valid  words
+        words.add("hello");
+        words.add("world");
+        words.add("java");
+        words.add("sea");
+        words.add("messi");
+        Task6 task = new Task6(words); // Create a new instance of the Task6 class with the words
+        String input = "messi"; // String for which we want to find closest matches
+        Set<String> closestMatches = task.GetClosestMatches(input); // Find closest matches
+        if (closestMatches.contains(input)) { // If the input string is a valid  word
+            System.out.println(Arrays.toString(closestMatches.toArray()));
+            System.out.println(input + " is spelled correctly.");
+        } else { // If the input string is not a valid word
+            System.out.println(input + " might be spelled incorrectly.");
+            System.out.println("Possible correct spellings are:");
+            System.out.println(Arrays.toString(closestMatches.toArray())); // Print the closest matches
+        }
+    }
+}
