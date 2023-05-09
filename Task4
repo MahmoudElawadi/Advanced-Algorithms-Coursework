@@ -1,0 +1,77 @@
+import java.util.ArrayList;
+import java.util.List;
+
+// Define a Scheduler class
+class Scheduler {
+    List<int[]> jobs; // Each job is an array of [id, priority, duration]
+
+    // Constructor that sets the jobs list
+    public Scheduler(List<int[]> jobs) {
+        this.jobs = jobs;
+    }
+
+    // Schedule jobs using the Highest Priority algorithm
+    public void ScheduleHighestPriority() {
+        System.out.println("Highest Priority:");
+        // Use the sort method of the List interface to sort the jobs by priority
+        jobs.sort((a, b) -> b[1] - a[1]);
+        // Schedule the jobs from the list
+        ScheduleJobs();
+    }
+
+    // Schedule jobs using the First Come First Served algorithm
+    public void ScheduleFirstComeFirstServed() {
+        System.out.println("First Come First Served:");
+        // Use the sort method of the List interface to sort the jobs by id
+        jobs.sort((a, b) -> a[0] - b[0]);
+        // Schedule the jobs from the list
+        ScheduleJobs();
+    }
+
+    // Schedule jobs using the Shortest Remaining Time First algorithm
+    public void ScheduleShortestRemainingTimeFirst() {
+        System.out.println("Shortest Remaining Time First:");
+        // Use the sort method of the List interface to sort the jobs by duration
+        jobs.sort((a, b) -> a[2] - b[2]);
+        // Schedule the jobs from the list
+        ScheduleJobs();
+    }
+
+    // Private method that schedules the jobs in the list and prints the execution sequence
+    private void ScheduleJobs() {
+        int time = 0;
+        // Loop through each job in the jobs list
+        for (int[] job : jobs) {
+            // Loop for each unit of duration of the job
+            for (int i = 0; i < job[2]; i++) {
+                // Print a message indicating that the job is running at the current time
+                System.out.println("System time [" + time + "] - Job " + job[0] + " is running.");
+                time++; // Increment the time variable for each unit of duration
+            }
+            System.out.println(); // Print a blank line between jobs
+        }
+    }
+}
+
+// Define a Task4 class (main class)
+public class Task4 {
+    public static void main(String[] args) {
+
+        // Create a list of jobs
+        List<int[]> jobs = new ArrayList<>();
+        jobs.add(new int[]{1, 10, 5});
+        jobs.add(new int[]{2, 5, 3});
+        jobs.add(new int[]{3, 8, 2});
+        jobs.add(new int[]{4, 4, 1});
+        jobs.add(new int[]{5, 6, 4});
+
+// Create a scheduler object with the list of jobs as an argument
+        Scheduler scheduler = new Scheduler(jobs);
+
+// Schedule the jobs using the three scheduling algorithms
+        scheduler.ScheduleHighestPriority();
+        scheduler.ScheduleFirstComeFirstServed();
+        scheduler.ScheduleShortestRemainingTimeFirst();
+
+    }
+}
